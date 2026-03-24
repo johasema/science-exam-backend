@@ -1,2 +1,2 @@
-web: bash run.sh
+web: python run_server.py
 

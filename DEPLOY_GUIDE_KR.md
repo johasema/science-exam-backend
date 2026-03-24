@@ -63,10 +63,11 @@ git push -u origin main
 3. 설정:
    - **Runtime**: Python
    - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command** (둘 중 하나):
-     - 권장: `bash run.sh` (PORT 누락 시 로그에 바로 표시됨)
-     - 또는: `uvicorn main:app --host 0.0.0.0 --port $PORT` (**`$PORT`까지 그대로** 입력, 따옴표/공백 주의)
-   - 대시보드에 Start Command를 비워 두면 `Procfile`의 `web: bash run.sh`가 사용될 수 있습니다(플랫폼 설정에 따라 다를 수 있음).
+   - **Start Command** (권장 순서):
+     1. **`python run_server.py`** — `$PORT` 치환 문제 없이 동작
+     2. `bash run.sh` — bash에서 `PORT` 사용
+     3. `uvicorn main:app --host 0.0.0.0 --port $PORT` — Render 셸에서 `$PORT`가 비면 **지금 같은 오류**가 납니다
+   - 대시보드 Start Command를 비우면 `Procfile`의 `web: python run_server.py`가 쓰일 수 있습니다(설정에 따라 다름).
 
 ### 3-3. 환경변수 설정
 Render 서비스의 `Environment`에서 아래 추가:
