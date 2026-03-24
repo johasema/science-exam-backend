@@ -63,8 +63,10 @@ git push -u origin main
 3. 설정:
    - **Runtime**: Python
    - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-   - (또는 `Procfile` 사용 가능)
+   - **Start Command** (둘 중 하나):
+     - 권장: `bash run.sh` (PORT 누락 시 로그에 바로 표시됨)
+     - 또는: `uvicorn main:app --host 0.0.0.0 --port $PORT` (**`$PORT`까지 그대로** 입력, 따옴표/공백 주의)
+   - 대시보드에 Start Command를 비워 두면 `Procfile`의 `web: bash run.sh`가 사용될 수 있습니다(플랫폼 설정에 따라 다를 수 있음).
 
 ### 3-3. 환경변수 설정
 Render 서비스의 `Environment`에서 아래 추가:
