@@ -30,9 +30,18 @@ class Settings(BaseSettings):
 def _normalize_database_url(url: str) -> str:
     # 일부 서비스는 postgres:// 를 내려주므로 SQLAlchemy용으로 변환
     if url.startswith("postgres://"):
-        return url.replace("postgres://", "postgresql+psycopg://", 1)
-    if url.startswith("postgresql://"):
-        return url.replace("postgresql://", "postgresql+psycopg://", 1)
+        url = url.replace("postgres://", "postgresql+psycopg://", 1)
+    elif url.startswith("postgresql://"):
+        url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+
+    # Render PostgreSQL(특히 외부 URL)은 SSL 미설정 시 기동 중 DB 접속이 실패하는 경우가 많음
+    if (
+        url.startswith("postgresql+psycopg")
+        and "sslmode=" not in url
+        and os.environ.get("RENDER") == "true"
+    ):
+        sep = "&" if "?" in url else "?"
+        url = f"{url}{sep}sslmode=require"
     return url
 
 
